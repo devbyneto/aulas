@@ -1,0 +1,82 @@
+lista_usuarios = ['<1>', ['<Edson>', '<Neto>', '<19.05.2004>', '<0001>'], '<2>', [
+    '<Joao>', '<Marcos>', '<12.09.2005>', '<0002>'], '<3>', ['<Francisco>', '<Junior>', '<30.03.2000>', '<0003>']]
+lista_aux = []
+parametros=['ID', 'Nome', 'Último nome', 'Data de nascimento', 'Número de telefone']
+
+while True:
+
+    entrada = input('Entrada: ')
+    entrada = entrada.split(' ')
+
+    if entrada[0] == 'add':
+        if int(entrada[1].replace('<', '').replace('>', '')) < 0:
+            break
+
+        if entrada[1] in lista_usuarios:
+            print('Já há usuário cadastrado com esse ID.')
+            break
+
+        for i in range(2, 6):
+            lista_aux.append(entrada[i])
+
+        lista_usuarios.append(entrada[1])
+        lista_usuarios.append(lista_aux)
+        lista_aux = []
+        print(lista_usuarios)
+        print(entrada)
+
+    elif entrada[0] == 'del':
+        if entrada[1] in lista_usuarios:
+            print(entrada)
+            aux = lista_usuarios.index(entrada[1])
+            lista_usuarios.pop(aux+1)
+            lista_usuarios.pop(aux)
+            print(aux)
+            print(lista_usuarios)
+
+        else:
+            print('Não há nenhum usuário com esse ID!')
+            break
+
+    elif entrada[0] == 'info':
+        if entrada[1] in lista_usuarios:
+            aux = lista_usuarios.index(entrada[1])
+            print((lista_usuarios[aux]).replace('<', '').replace('>', ''))
+
+            for i in lista_usuarios[aux+1]:
+                print(i.replace('<', '').replace('>', ''))
+
+        else:
+            print('Não há esse usuário na lista.')
+            break
+
+    elif entrada[0] == 'query':
+        # query (<fn>:<Edson>)
+        entrada += entrada[1].replace('(', '').replace(')', '').split(':')
+        entrada.pop(1)
+
+        if entrada[1] == '<fn>':
+            aux = 0
+        elif entrada[1] == '<ln>':
+            aux = 1
+        elif entrada[1] == '<bd>':
+            aux = 2
+        elif entrada[1] == '<pn>':
+            aux = 3
+
+        to_print=[]
+        for i in range(1, len(lista_usuarios), 2):
+            # print(lista_usuarios[i])
+            if entrada[2] in lista_usuarios[i]:
+                aux2=i
+                print(lista_usuarios[i])
+                for i in lista_usuarios[i]:
+                    to_print.append(i)
+        to_print.insert(0, lista_usuarios[aux2-1])
+
+        for i in range(len(to_print)):
+            print(f'{parametros[i]}: {(to_print[i])}')
+
+        print('')
+        print(lista_usuarios)
+        print(entrada)
